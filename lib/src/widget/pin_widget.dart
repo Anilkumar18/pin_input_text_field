@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:pin_input_text_field/src/cursor/pin_cursor.dart';
 import 'package:pin_input_text_field/src/decoration/pin_decoration.dart';
@@ -65,6 +66,9 @@ class PinInputTextField extends StatefulWidget {
   /// The cursor of the pin widget, the default is disabled.
   final Cursor cursor;
 
+  /// in dark mode
+  final bool isDark;
+
   PinInputTextField({
     Key? key,
     this.pinLength = _kDefaultPinLength,
@@ -83,7 +87,9 @@ class PinInputTextField extends StatefulWidget {
     this.enableInteractiveSelection = false,
     this.toolbarOptions,
     this.autofillHints,
+    this.isDark=false,
     Cursor? cursor,
+
   })  :
 
         /// pinLength must larger than 0.
@@ -121,6 +127,25 @@ class _PinInputTextFieldState extends State<PinInputTextField>
   late _PinPaint _pinPaint;
   Timer? _cursorTimer;
   bool _targetCursorVisibility = false;
+
+  Color DARK_NEUMORPHIC_SHADOW_TOP_POSTIVE = Color(0xff2e2e2e);
+  Color DARK_NEUMORPHIC_SHADOW_BOTTOM_POSTIVE = Color(0xFF141414);
+
+  Color LIGHT_NEUMORPHIC_SHADOW_BOTTOM_POSTIVE = Color(0xFFc8c8c8);
+  Color LIGHT_NEUMORPHIC_SHADOW_TOP_NEGATIVE = Color(0xFFffffff);
+
+  Color DARKAPPBAR_NEUMORPHIC_SHADOW_TOP_NEGATIVE = Color(0xff2e2e2e);
+   Color DARKAPPBAR_NEUMORPHIC_SHADOW_BOTTOM_POSTIVE = Color(0xff141414);
+
+   Color DARK_SCAFFOLD_BACKGROUND_COLOR = Color(0xFF212121);
+   Color LIGHT_SCAFFOLD_BACKGROUND_COLOR = Color(0xFFEBEBEB);
+
+   Color DARK_APPBAR_BACKGROUND_COLOR = Color(0xFF212121);
+   Color LIGHT_APPBAR_BACKGROUND_COLOR = Color(0xFFEBEBEB);
+
+   double TEXTFIELD_NEUMORPHIC_DEPTH = -6;
+   double BUTTON_NEUMORPHIC_DEPTH = 6;
+   double TEXTFIELD_NEUMORPHIC_INTENSITY = 10;
 
   /// The current cursor color, the default one should be transparent if the TextField does not have focus.
   Color _cursorColor = Colors.transparent;
@@ -242,7 +267,23 @@ class _PinInputTextFieldState extends State<PinInputTextField>
     return CustomPaint(
       /// The foreground paint to display pin.
       foregroundPainter: _pinPaint,
-      child: TextField(
+      child:Neumorphic(
+        style: NeumorphicStyle(
+        intensity: TEXTFIELD_NEUMORPHIC_INTENSITY,
+        depth: TEXTFIELD_NEUMORPHIC_DEPTH,
+        shadowDarkColorEmboss: widget.isDark
+        ? DARK_NEUMORPHIC_SHADOW_BOTTOM_POSTIVE
+            : LIGHT_NEUMORPHIC_SHADOW_BOTTOM_POSTIVE,
+        shadowLightColorEmboss: widget.isDark
+        ? DARK_NEUMORPHIC_SHADOW_TOP_POSTIVE
+            : LIGHT_NEUMORPHIC_SHADOW_TOP_NEGATIVE,
+        shadowLightColor: widget.isDark
+        ? DARK_NEUMORPHIC_SHADOW_TOP_POSTIVE
+            : LIGHT_NEUMORPHIC_SHADOW_TOP_NEGATIVE,
+        shadowDarkColor: widget.isDark
+        ? DARK_NEUMORPHIC_SHADOW_BOTTOM_POSTIVE
+        : LIGHT_NEUMORPHIC_SHADOW_BOTTOM_POSTIVE),
+    child: TextField(
         /// Actual textEditingController.
         controller: _effectiveController,
 
@@ -325,7 +366,7 @@ class _PinInputTextFieldState extends State<PinInputTextField>
           focusedErrorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
         ),
-      ),
+      )),
     );
   }
 
