@@ -365,6 +365,7 @@ class _PinInputTextFieldState extends State<PinInputTextField>
           errorBorder: InputBorder.none,
           focusedErrorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
+          fillColor: widget.isDark?DARK_SCAFFOLD_BACKGROUND_COLOR:LIGHT_SCAFFOLD_BACKGROUND_COLOR
         ),
       )),
     );
